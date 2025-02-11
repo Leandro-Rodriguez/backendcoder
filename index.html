@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>E-commerce Front</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .output {
+      margin-top: 20px;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      background-color: #f9f9f9;
+    }
+    .output pre {
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>E-commerce API Frontend</h1>
+    
+    <section>
+      <h2>Products</h2>
+      <button onclick="getProducts()">Get All Products</button>
+      <button onclick="getProductById()">Get Product by ID</button>
+      <button onclick="createProduct()">Create Product</button>
+      <button onclick="updateProduct()">Update Product</button>
+      <button onclick="deleteProduct()">Delete Product</button>
+    </section>
+
+    <section style="margin-top: 30px;">
+      <h2>Carts</h2>
+      <button onclick="createCart()">Create Cart</button>
+      <button onclick="getCartById()">Get Cart by ID</button>
+      <button onclick="addProductToCart()">Add Product to Cart</button>
+    </section>
+
+    <div class="output" id="output">
+      <h3>Output</h3>
+      <pre id="outputContent">No actions performed yet.</pre>
+    </div>
+  </div>
+
+  <script>
+    const apiBase = 'http://localhost:8080/api';
+
+    async function apiCall(endpoint, method = 'GET', body = null) {
+      const options = { method, headers: { 'Content-Type': 'application/json' } };
+      if (body) options.body = JSON.stringify(body);
+
+      try {
+        const response = await fetch(`${apiBase}${endpoint}`, options);
+        const data = await response.json();
+        document.getElementById('outputContent').innerText = JSON.stringify(data, null, 2);
+      } catch (error) {
+        document.getElementById('outputContent').innerText = `Error: ${error.message}`;
+      }
+    }
+
+    // Products
+    function getProducts() {
+      apiCall('/products');
+    }
+
+    function getProductById() {
+      const id = prompt('Enter Product ID:');
+      if (id) apiCall(`/products/${id}`);
+    }
+
+    function createProduct() {
+      const product = {
+        title: 'New Product',
+        description: 'Description of the product',
+        code: 'PRD001',
+        price: 100,
+        stock: 10,
+        category: 'Test Category',
+        thumbnails: ['https://example.com/image.jpg']
+      };
+      apiCall('/products', 'POST', product);
+    }
+
+    function updateProduct() {
+      const id = prompt('Enter Product ID to update:');
+      if (id) {
+        const updates = {
+          price: 200,
+          stock: 15
+        };
+        apiCall(`/products/${id}`, 'PUT', updates);
+      }
+    }
+
+    function deleteProduct() {
+      const id = prompt('Enter Product ID to delete:');
+      if (id) apiCall(`/products/${id}`, 'DELETE');
+    }
+
+    // Carts
+    function createCart() {
+      apiCall('/carts', 'POST');
+    }
+
+    function getCartById() {
+      const id = prompt('Enter Cart ID:');
+      if (id) apiCall(`/carts/${id}`);
+    }
+
+    function addProductToCart() {
+      const cartId = prompt('Enter Cart ID:');
+      const productId = prompt('Enter Product ID to add:');
+      if (cartId && productId) apiCall(`/carts/${cartId}/product/${productId}`, 'POST');
+    }
+  </script>
+</body>
+</html>

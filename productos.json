@@ -1,0 +1,35 @@
+[
+  {
+    "id": 1,
+    "title": "Laptop Gamer",
+    "description": "Laptop de alto rendimiento para videojuegos",
+    "code": "LP1001",
+    "price": 1500,
+    "status": true,
+    "stock": 10,
+    "category": "Electronics",
+    "thumbnails": ["https://example.com/laptop1.jpg"]
+  },
+  {
+    "id": 2,
+    "title": "Smartphone",
+    "description": "Smartphone de última generación",
+    "code": "SP2002",
+    "price": 800,
+    "status": true,
+    "stock": 20,
+    "category": "Electronics",
+    "thumbnails": ["https://example.com/smartphone1.jpg"]
+  },
+  {
+    "id": 3,
+    "title": "Auriculares",
+    "description": "Auriculares con cancelación de ruido",
+    "code": "AU3003",
+    "price": 200,
+    "status": true,
+    "stock": 15,
+    "category": "Accessories",
+    "thumbnails": ["https://example.com/auriculares1.jpg"]
+  }
+]
